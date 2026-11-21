@@ -196,7 +196,7 @@ export const contact = {
   lead: "Заполните форму, и мы ответим со стоимостью и сроком. Или сразу напишите в мессенджер.",
   fields: {
     name: { label: "Имя", placeholder: "Как к вам обращаться" },
-    contact: { label: "Телефон или Telegram", placeholder: "+7 900 000-00-00 или @username" },
+    contact: { label: "Телефон или Telegram", placeholder: "+996 555 000 000 или @username" },
     type: { label: "Тип работы", placeholder: "Выберите тип" },
     deadline: { label: "Срок сдачи", placeholder: "Например, до 20 декабря" },
     comment: { label: "Комментарий", placeholder: "Тема, объём, требования, ссылки на примеры" },

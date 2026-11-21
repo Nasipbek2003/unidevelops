@@ -1,7 +1,7 @@
 import { Logo } from "@/components/brand/Logo";
 import { CurrentYear } from "@/components/ui/CurrentYear";
 import { footer } from "@/content";
-import { emailHref, phoneHref, siteConfig, telegramHref, whatsappHref } from "@/config/site";
+import { instagramHref, telegramHref, whatsappHref } from "@/config/site";
 
 const LINK =
   "relative inline-flex h-11 items-center text-[16px] text-paper after:absolute after:inset-x-0 after:bottom-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-orange-500 after:transition-transform after:duration-200 after:ease-out after:content-[''] hover:after:scale-x-100 focus-visible:outline-offset-[3px]";
@@ -67,13 +67,8 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href={emailHref} className={`${LINK} [overflow-wrap:anywhere]`}>
-                  {siteConfig.email}
-                </a>
-              </li>
-              <li>
-                <a href={phoneHref} className={LINK}>
-                  {siteConfig.phone}
+                <a href={instagramHref} target="_blank" rel="noopener noreferrer" className={LINK}>
+                  Instagram
                 </a>
               </li>
             </ul>
