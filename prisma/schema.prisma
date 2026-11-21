@@ -1,0 +1,54 @@
+// Схема БД лендинга UNIDEVELOPS (Neon PostgreSQL).
+// Строки подключения задаются в prisma7.config.ts (CLI) и src/lib/db.ts (приложение).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Тип работы. Совпадает со списком workTypes в src/content/index.ts.
+enum WorkType {
+  COURSEWORK // Курсовая
+  THESIS // Дипломная (ВКР)
+  MASTERS_THESIS // Магистерская диссертация
+  ARTICLE // Научная статья
+  ESSAY // Реферат / эссе
+  PRACTICE_REPORT // Отчёт по практике
+  WEBSITE // Сайт / лендинг
+  WEB_APP // Веб-приложение
+  OTHER // Другое
+
+  @@map("work_type")
+}
+
+// Статус обработки заявки.
+enum LeadStatus {
+  NEW
+  IN_PROGRESS
+  DONE
+  REJECTED
+
+  @@map("lead_status")
+}
+
+// Заявка с формы на сайте.
+model Lead {
+  id        String     @id @default(cuid())
+  name      String
+  // Телефон или Telegram
+  contact   String
+  workType  WorkType   @map("work_type")
+  // Свободный текст, например «до 20 декабря»
+  deadline  String?    @db.VarChar(100)
+  comment   String?    @db.Text
+  status    LeadStatus @default(NEW)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@index([status, createdAt])
+  @@map("leads")
+}

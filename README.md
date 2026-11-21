@@ -34,3 +34,24 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## База данных
+
+Заявки хранятся в Neon PostgreSQL через Prisma 7 (драйвер-адаптер `@prisma/adapter-neon`). Схема: `prisma/schema.prisma`, конфиг CLI: `prisma7.config.ts`, клиент для серверного кода: `src/lib/db.ts`.
+
+Переменные окружения (шаблон в [`.env.example`](.env.example), скопируйте его в `.env`):
+
+- `DATABASE_URL`: pooled-подключение Neon (хост с `-pooler`), его использует приложение;
+- `DIRECT_URL`: прямое подключение (тот же хост без `-pooler`), его используют Prisma CLI и миграции.
+
+Prisma Client генерируется в `src/generated/prisma` (в git не попадает) автоматически при `npm install` и `npm run build`.
+
+Применить миграции к базе:
+
+```bash
+npx prisma migrate deploy
+```
+
+На Vercel обе переменные, `DATABASE_URL` и `DIRECT_URL`, задаются в Project Settings → Environment Variables.
+
+Prisma 7 требует Node.js 20.19+, 22.12+ или 24+. На Node 23 `npm install` падает на проверке версии в пакете `prisma`.
