@@ -27,8 +27,10 @@ export function ButtonLink({
   children,
   ...rest
 }: Common & AnchorHTMLAttributes<HTMLAnchorElement>) {
+  // Кнопки-ссылки на форму заявки считаются целью click_cta (src/lib/analytics.ts)
+  const isCta = typeof rest.href === "string" && rest.href.endsWith("#contact");
   return (
-    <a {...rest} className={classes(variant, size, fullWidth, className)}>
+    <a {...rest} data-cta={isCta ? "" : undefined} className={classes(variant, size, fullWidth, className)}>
       {children}
       {arrow && <ArrowGlyph />}
     </a>

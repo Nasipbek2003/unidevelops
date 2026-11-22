@@ -2,13 +2,14 @@ import { cn, cssVars } from "@/lib/utils";
 import { InView } from "./InView";
 import { Pen } from "./Pen";
 
-type Dir = "down-right" | "right" | "up-left" | "down";
+type Dir = "down-right" | "right" | "up-left" | "down" | "left";
 
 const ARROW_ROT: Record<Dir, string> = {
   "down-right": "rotate-0",
   right: "-rotate-[38deg]",
   "up-left": "rotate-[200deg]",
   down: "rotate-[40deg]",
+  left: "rotate-[160deg]",
 };
 
 /** Статичные строки для Tailwind: поворот стрелки на lg */
@@ -17,6 +18,7 @@ const ARROW_ROT_LG: Record<Dir, string> = {
   right: "lg:-rotate-[38deg]",
   "up-left": "lg:rotate-[200deg]",
   down: "lg:rotate-[40deg]",
+  left: "lg:rotate-[160deg]",
 };
 
 interface NoteProps {

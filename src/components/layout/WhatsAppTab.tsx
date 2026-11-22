@@ -18,7 +18,13 @@ export function WhatsAppTab() {
     const hero = document.getElementById("hero");
     const contactSection = document.getElementById("contact");
     const footer = document.querySelector("footer");
-    if (!el || !hero || !contactSection || !footer) return;
+    if (!el) return;
+    // Страница 404: нет ни #hero, ни #contact, кнопка видна сразу после монтирования
+    if (!hero) {
+      el.setAttribute("data-visible", "");
+      return;
+    }
+    if (!contactSection || !footer) return;
 
     const state = { hero: true, contact: false, footer: false };
     const update = () => {

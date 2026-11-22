@@ -150,6 +150,7 @@ export function WebTabs() {
                   <h4>{it.title}</h4>
                   <p>{it.text}</p>
                   <span className="panel-term">
+                    {it.price ? <span className="panel-price">{it.price}</span> : null}
                     <span className="term-type" style={cssVars({ "--n": it.term.length + 2 })}>
                       {it.term}
                     </span>

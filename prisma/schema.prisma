@@ -10,16 +10,18 @@ datasource db {
   provider = "postgresql"
 }
 
-// Тип работы. Совпадает со списком workTypes в src/content/index.ts.
+// Тип работы. Совпадает со списком workTypes (поле «Тип работы» формы) в src/content/index.ts,
+// порядок тот же. При изменении списка в форме обновите enum и создайте миграцию.
 enum WorkType {
+  SRS // СРС
+  ESSAY // Реферат / эссе
+  PRESENTATION // Презентация
   COURSEWORK // Курсовая
   THESIS // Дипломная (ВКР)
   MASTERS_THESIS // Магистерская диссертация
   ARTICLE // Научная статья
-  ESSAY // Реферат / эссе
   PRACTICE_REPORT // Отчёт по практике
-  WEBSITE // Сайт / лендинг
-  WEB_APP // Веб-приложение
+  DEV_PROJECT // Проект с разработкой
   OTHER // Другое
 
   @@map("work_type")

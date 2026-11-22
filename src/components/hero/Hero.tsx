@@ -12,7 +12,14 @@ import { TitleSheet } from "./TitleSheet";
 
 const delay = (ms: number) => cssVars({ "--d": `${ms}ms` });
 
+/** Лид: маркер сноски 1 стоит на последнем слове («предоплаты»), точка после него */
+function splitLead(lead: string): [string, string, string] {
+  const m = /^([\s\S]*?)([^\s.]+)(\.?)$/u.exec(lead);
+  return m ? [m[1], m[2], m[3]] : [lead, "", ""];
+}
+
 export function Hero() {
+  const [leadBefore, leadWord, leadEnd] = splitLead(hero.lead);
   const [serifBefore, serifMarked, serifAfter] = hero.h1Serif;
 
   return (
@@ -58,9 +65,10 @@ export function Hero() {
             </div>
 
             <p className="lead rise mt-6 lg:mt-[clamp(12px,2.4svh,24px)]" style={delay(220)}>
-              {hero.leadBefore}
-              {hero.leadMarked}
+              {leadBefore}
+              {leadWord}
               <FnMark n={fnNumber.hero} />
+              {leadEnd}
             </p>
 
             <div

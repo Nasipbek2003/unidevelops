@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { ButtonLink } from "@/components/ui/Button";
@@ -17,6 +18,9 @@ function goTo(id: string) {
   el.focus({ preventScroll: true });
   history.replaceState(null, "", `#${id}`);
 }
+
+/** Пункты 6 и 7 (FAQ, Контакты) в шапке только с 1280; на 1024–1279 они в кнопке, подвале и мобильном меню */
+const HIDDEN_BELOW_XL = 5;
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -99,6 +103,8 @@ export function Header() {
   }, []);
 
   const closeToSection = (id: string) => (e: MouseEvent<HTMLAnchorElement>) => {
+    // нет секции (страница 404): обычный переход по ссылке /#id на главную
+    if (!document.getElementById(id)) return;
     e.preventDefault();
     setOpen(false);
     // после коммита закрытия (снят scroll lock) скроллим и переводим фокус в секцию
@@ -112,21 +118,21 @@ export function Header() {
         data-scrolled={scrolled ? "" : undefined}
       >
         <div className="wrap flex h-full items-center justify-between">
-          <a href="#hero" aria-label="UNIDEVELOPS" className="inline-flex h-11 items-center">
+          <Link href="/#hero" aria-label="UNIDEVELOPS" className="inline-flex h-11 items-center">
             <Logo markClassName="h-7 lg:h-9" wordClassName="text-[15px] lg:text-[18px]" />
-          </a>
+          </Link>
 
           <nav aria-label={header.navLabel} className="hidden lg:block">
             <ul className="flex items-center">
               {navItems.map((it, i) => (
-                <li key={it.id} className="flex items-center">
+                <li key={it.id} className={`flex items-center${i >= HIDDEN_BELOW_XL ? " max-xl:hidden" : ""}`}>
                   {i > 0 && (
                     <span aria-hidden="true" className="mx-[14px] font-mono font-medium text-orange-500">
                       /
                     </span>
                   )}
                   <a
-                    href={`#${it.id}`}
+                    href={`/#${it.id}`}
                     aria-current={active === it.id ? "location" : undefined}
                     className="relative inline-flex h-11 items-center text-[16px] font-medium text-navy-800 after:absolute after:inset-x-0 after:bottom-1 after:h-0.5 after:origin-left after:scale-x-0 after:bg-orange-500 after:transition-transform after:duration-200 after:ease-out after:content-[''] hover:after:scale-x-100 aria-[current=location]:after:scale-x-100"
                   >
@@ -137,7 +143,7 @@ export function Header() {
             </ul>
           </nav>
 
-          <ButtonLink href="#contact" size="sm" className="hidden lg:inline-flex">
+          <ButtonLink href="/#contact" size="sm" className="hidden lg:inline-flex">
             {header.cta}
           </ButtonLink>
 
@@ -189,7 +195,7 @@ export function Header() {
           </button>
         </div>
 
-        <nav aria-label={header.navLabel} className="wrap mt-2">
+        <nav aria-label={header.navLabel} className="wrap">
           <ol>
             {navItems.map((it, i) => (
               <li
@@ -198,22 +204,22 @@ export function Header() {
                 style={cssVars({ "--i": i })}
               >
                 <a
-                  href={`#${it.id}`}
+                  href={`/#${it.id}`}
                   onClick={closeToSection(it.id)}
-                  className="flex h-[72px] items-center gap-5"
+                  className="flex h-[clamp(52px,8.5svh,72px)] items-center gap-5"
                 >
                   <span aria-hidden="true" className="w-4 font-mono text-[14px] font-medium text-orange-700">
                     {i + 1}
                   </span>
-                  <span className="font-display text-[44px] font-bold leading-none">{it.label}</span>
+                  <span className="font-display text-[36px] font-bold leading-none">{it.label}</span>
                 </a>
               </li>
             ))}
           </ol>
         </nav>
 
-        <div className="wrap menu-row mt-auto space-y-3 pb-6 pt-8" style={cssVars({ "--i": 5 })}>
-          <ButtonLink href="#contact" size="lg" fullWidth onClick={closeToSection("contact")}>
+        <div className="wrap menu-row mt-auto space-y-3 pb-6 pt-6" style={cssVars({ "--i": navItems.length })}>
+          <ButtonLink href="/#contact" size="lg" fullWidth onClick={closeToSection("contact")}>
             {header.cta}
           </ButtonLink>
           <div className="grid grid-cols-2 gap-3">

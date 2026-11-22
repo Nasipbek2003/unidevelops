@@ -1,6 +1,6 @@
 import { cssVars } from "@/lib/utils";
 
-type PenKind = "underline" | "circle" | "check" | "arrow";
+type PenKind = "underline" | "circle" | "check" | "arrow" | "strike" | "vbar" | "plus";
 
 const SHAPES: Record<PenKind, { viewBox: string; paths: string[] }> = {
   underline: {
@@ -16,6 +16,9 @@ const SHAPES: Record<PenKind, { viewBox: string; paths: string[] }> = {
     viewBox: "0 0 80 50",
     paths: ["M4 8 C30 4 60 14 70 40", "M60 34 L70 42 L74 30"],
   },
+  strike: { viewBox: "0 0 200 10", paths: ["M2 7 L198 3"] },
+  vbar: { viewBox: "0 0 8 40", paths: ["M4 2 C5 14 3 28 4 38"] },
+  plus: { viewBox: "0 0 24 24", paths: ["M12 3 C12 8 11 16 12 21", "M3 12 C9 11 15 13 21 12"] },
 };
 
 interface PenProps {

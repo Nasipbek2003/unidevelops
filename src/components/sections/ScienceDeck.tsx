@@ -2,6 +2,7 @@ import { FnMark } from "@/components/ui/Footnote";
 import { InView } from "@/components/ui/InView";
 import { Note } from "@/components/ui/Note";
 import { Pen } from "@/components/ui/Pen";
+import { Price } from "@/components/ui/Price";
 import { fnNumber, margin, redpen, services } from "@/content";
 import { cssVars } from "@/lib/utils";
 import { Deck } from "./Deck";
@@ -49,6 +50,9 @@ export function ScienceDeck({ headingId }: { headingId: string }) {
                 </h4>
                 <span aria-hidden="true" className="leaf-dots" />
                 <p className="leaf-p">{it.text}</p>
+                <span className="leaf-price">
+                  <Price value={it.price} size="sm" />
+                </span>
                 <span className="leaf-term">
                   <span className="leaf-when">
                     {it.term}
@@ -71,7 +75,7 @@ export function ScienceDeck({ headingId }: { headingId: string }) {
                   <span className="relative inline-block h-8 w-14 shrink-0 rotate-[190deg]">
                     <Pen kind="arrow" delay={300} duration={500} className="inset-0 size-full" />
                   </span>
-                  <span className="font-hand text-[24px] leading-none text-orange-700">{redpen[3]}</span>
+                  <span className="select-none font-hand text-[24px] leading-none text-orange-700">{redpen[3]}</span>
                 </span>
               )}
             </li>

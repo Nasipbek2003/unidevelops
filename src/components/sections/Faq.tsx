@@ -6,7 +6,7 @@ import { Pen } from "@/components/ui/Pen";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { faq, redpen } from "@/content";
 
-/** Вопрос «Как проходит оплата?»: к нему относится пометка «см. гл. 2» (§ 2 «Как идёт работа»: этапы и предоплата) */
+/** Вопрос «Как проходит оплата?»: к нему относится пометка «см. гл. 2» (§ 3 «Как идёт работа»: этапы и предоплата) */
 const PAY_INDEX = 2;
 
 export function Faq() {
@@ -55,10 +55,10 @@ export function Faq() {
                               as="span"
                               className="ml-6 hidden -rotate-[4deg] items-end gap-2 align-middle lg:inline-flex"
                             >
-                              <span className="relative inline-block h-8 w-16 shrink-0 rotate-[190deg]" aria-hidden="true">
+                              <span className="relative inline-block h-8 w-16 shrink-0 rotate-[190deg] select-none" aria-hidden="true">
                                 <Pen kind="arrow" duration={500} delay={200} className="inset-0 size-full" />
                               </span>
-                              <span aria-hidden="true" className="font-hand text-[24px] font-normal leading-none text-orange-700">
+                              <span aria-hidden="true" className="select-none font-hand text-[24px] font-normal leading-none text-orange-700">
                                 {redpen[5]}
                               </span>
                             </InView>

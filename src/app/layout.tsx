@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant, Golos_Text, JetBrains_Mono, Marck_Script } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
+import { Analytics } from "@/components/analytics/Analytics";
+import { getSiteUrl, siteConfig } from "@/config/site";
 import { header, meta } from "@/content";
 import "./globals.css";
 
@@ -32,14 +34,22 @@ const marck = Marck_Script({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: meta.title,
   description: meta.description,
+  alternates: { canonical: "/" },
   openGraph: {
     title: meta.ogTitle,
     description: meta.ogDescription,
+    url: "/",
     type: "website",
     locale: "ru_RU",
-    siteName: "UNIDEVELOPS",
+    siteName: siteConfig.name,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: meta.ogTitle,
+    description: meta.ogDescription,
   },
 };
 
@@ -63,6 +73,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {header.skipLink}
         </a>
         <AppProviders>{children}</AppProviders>
+        <Analytics />
       </body>
     </html>
   );

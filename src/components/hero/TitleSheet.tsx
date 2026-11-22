@@ -47,7 +47,7 @@ export function TitleSheet() {
             <span className="tp-line" />
           </p>
           <p className="tp-sign">
-            <span className="tp-sign-text">{t.supervisor}</span>
+            <span className="tp-sign-text">{t.reviewer}</span>
             <span className="tp-line">
               <Pen
                 kind="check"

@@ -13,6 +13,7 @@ import { useContactPreset } from "@/components/providers/AppProviders";
 import { Button } from "@/components/ui/Button";
 import { contact, workTypes } from "@/content";
 import { whatsappHref } from "@/config/site";
+import { track } from "@/lib/analytics";
 
 type FieldName = "name" | "contact" | "type" | "deadline" | "comment";
 type Values = Record<FieldName, string>;
@@ -149,6 +150,8 @@ export function ContactForm() {
     }
     setAlertText("");
 
+    // Цель шлём синхронно и до window.open: после открытия окна страница может потерять фокус
+    track("lead_submit");
     // Открываем окно синхронно в обработчике клика, иначе его блокируют браузеры
     window.open(whatsappHref(buildMessage(values)), "_blank", "noopener");
   };
