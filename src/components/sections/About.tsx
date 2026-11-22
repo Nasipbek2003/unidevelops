@@ -31,9 +31,9 @@ export function About() {
               number={a.number}
               title={a.title}
               lead={a.lead}
-              className="mb-12 md:mb-16 lg:sticky lg:top-[calc(var(--header-h)+48px)] lg:col-[2/span_4] lg:mb-0 lg:self-start"
+              className="mb-12 md:mb-16 lg:col-[2/span_4] lg:mb-0 lg:self-start lg:[@media(min-height:760px)]:sticky lg:[@media(min-height:760px)]:top-[calc(var(--header-h)+48px)]"
               aside={
-                <div className="about-text mt-8 max-w-[36rem] text-body">
+                <div className="about-text">
                   {a.paragraphs.map((p) => (
                     <p key={p}>{p}</p>
                   ))}

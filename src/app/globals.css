@@ -161,6 +161,45 @@
   section[id] {
     scroll-margin-top: 72px;
   }
+  /* Производительность (design.md разд. 6): секции после hero не считаются, пока далеко от экрана.
+     Высота «auto N» нужна до первой отрисовки, потом браузер помнит настоящую. Значения по замеру. */
+  main > section:not(#hero) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1500px;
+  }
+  main > section#services { contain-intrinsic-size: auto 2200px; }
+  main > section#prices { contain-intrinsic-size: auto 2250px; }
+  main > section#process { contain-intrinsic-size: auto 1450px; }
+  main > section#guarantees { contain-intrinsic-size: auto 2750px; }
+  main > section#reviews { contain-intrinsic-size: auto 850px; }
+  main > section#about { contain-intrinsic-size: auto 1500px; }
+  main > section#faq { contain-intrinsic-size: auto 1500px; }
+  main > section#contact { contain-intrinsic-size: auto 1420px; }
+  @media (min-width: 768px) {
+    main > section#services { contain-intrinsic-size: auto 2350px; }
+    main > section#prices { contain-intrinsic-size: auto 2130px; }
+    main > section#process { contain-intrinsic-size: auto 1350px; }
+    main > section#guarantees { contain-intrinsic-size: auto 2430px; }
+    main > section#reviews { contain-intrinsic-size: auto 910px; }
+    main > section#about { contain-intrinsic-size: auto 1300px; }
+    main > section#faq { contain-intrinsic-size: auto 1240px; }
+    main > section#contact { contain-intrinsic-size: auto 1220px; }
+  }
+  @media (min-width: 1024px) {
+    main > section#services { contain-intrinsic-size: auto 2880px; }
+    main > section#prices { contain-intrinsic-size: auto 1750px; }
+    main > section#process { contain-intrinsic-size: auto 1360px; }
+    main > section#guarantees { contain-intrinsic-size: auto 2340px; }
+    main > section#reviews { contain-intrinsic-size: auto 860px; }
+    main > section#about { contain-intrinsic-size: auto 1000px; }
+    main > section#faq { contain-intrinsic-size: auto 1350px; }
+    main > section#contact { contain-intrinsic-size: auto 1060px; }
+  }
+  @media (min-width: 1280px) {
+    main > section#about { contain-intrinsic-size: auto 925px; }
+    main > section#faq { contain-intrinsic-size: auto 1230px; }
+    main > section#contact { contain-intrinsic-size: auto 960px; }
+  }
   /* Фокус только через outline */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
     outline: 3px solid var(--color-navy-800);
@@ -1931,7 +1970,7 @@
     }
     .leaf-a {
       display: grid;
-      grid-template-columns: 36px auto minmax(12px, 1fr) auto;
+      grid-template-columns: 36px auto minmax(24px, 1fr) auto;
       grid-template-areas:
         "no t dots price"
         ". p p term";
@@ -1957,10 +1996,13 @@
     .leaf-dots {
       grid-area: dots;
       display: block;
-      align-self: end;
       height: 0;
       border-bottom: 2px dotted rgb(27 54 80 / 0.55);
-      transform: translateY(-6px);
+      transform: translateY(1px);
+    }
+    .leaf-price,
+    .leaf-dots {
+      align-self: last baseline;
     }
     .leaf-price {
       grid-area: price;
@@ -2436,29 +2478,45 @@
     font-size: 16px;
     line-height: 1.6;
   }
-  /* redpen.4: внутри .clause-p (фраза стоит в середине предложения, заметка у края абзаца);
-     <1024 под абзацем справа, стрелка вверх-влево */
+  /* redpen.4: внутри .pen-wrap, под фразой у её левого края, стрелка вверх на фразу (design.md 4.6.2) */
+  /* Резерв высоты под пометкой даёт margin-bottom inline-block: строка с фразой становится выше */
+  .clause-p .pen-wrap {
+    white-space: nowrap;
+    vertical-align: baseline;
+    margin-bottom: 36px;
+  }
   .clause-note {
     position: absolute;
-    right: 0;
-    top: calc(100% + 12px);
+    left: 8px;
+    top: calc(100% + 4px);
     display: flex;
-    align-items: flex-start;
-    gap: 4px;
+    align-items: flex-end;
+    gap: 6px;
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
+    transform: rotate(-4deg);
+    transform-origin: left top;
   }
   .clause-arrow {
     position: relative;
-    display: inline-block;
     flex: none;
-    width: 56px;
-    height: 32px;
-    transform: rotate(200deg);
+    width: 18px;
+    height: 26px;
   }
-  .clause-marked {
-    padding-bottom: calc(28px + 44px);
+  .clause-arrow-svg {
+    left: 50%;
+    top: 50%;
+    width: 26px;
+    height: 18px;
+    translate: -50% -50%;
+    rotate: -90deg;
+  }
+  .clause-note-t {
+    font-family: var(--font-hand);
+    font-size: 22px;
+    line-height: 1.15;
+    color: var(--color-orange-700);
   }
   @media (min-width: 768px) {
     .contract {
@@ -2467,8 +2525,22 @@
     .clause {
       padding: 28px 0 32px;
     }
-    .clause-marked {
-      padding-bottom: calc(32px + 44px);
+    .clause-p .pen-wrap {
+      margin-bottom: 40px;
+    }
+    .clause-note {
+      left: 12px;
+    }
+    .clause-arrow {
+      width: 22px;
+      height: 30px;
+    }
+    .clause-arrow-svg {
+      width: 30px;
+      height: 22px;
+    }
+    .clause-note-t {
+      font-size: 24px;
     }
     .clause-no {
       font-size: 32px;
@@ -2498,18 +2570,6 @@
     }
     .clause-h {
       font-size: 32px;
-    }
-    .clause-marked {
-      padding-bottom: 36px;
-    }
-    .clause-note {
-      left: calc(100% + 16px);
-      right: auto;
-      top: 0;
-      align-items: center;
-    }
-    .clause-arrow {
-      transform: scaleX(-1) rotate(-22deg);
     }
   }
   @media (min-width: 1280px) {
@@ -2837,16 +2897,20 @@
     .sf-arrow {
       display: block;
       position: absolute;
-      left: -60px;
-      top: 36px;
-      width: 52px;
-      height: 34px;
+      z-index: 1;
+      left: calc(-1 * var(--gap));
+      top: 126px;
+      width: 72px;
+      height: 46px;
       transform: scaleX(-1) rotate(-12deg);
     }
   }
   @media (min-width: 1280px) {
     .sticker-f-in {
       padding: 32px 28px 32px;
+    }
+    .sf-arrow {
+      top: 124px;
     }
   }
 
@@ -3224,8 +3288,25 @@
     text-align: center;
     color: var(--color-ink-soft);
   }
+  .about-text {
+    max-width: 36rem;
+    margin-top: 24px;
+    font-size: var(--text-body);
+    line-height: 1.55;
+    color: var(--color-navy-800);
+    text-wrap: pretty;
+  }
   .about-text p + p {
-    margin-top: 16px;
+    margin-top: 12px;
+  }
+  @media (min-width: 768px) {
+    .about-text {
+      margin-top: 32px;
+      line-height: 1.6;
+    }
+    .about-text p + p {
+      margin-top: 16px;
+    }
   }
   [data-inview] .dbl-rule-draw {
     animation: scale-x 400ms var(--ease-in-out) both;
@@ -3382,6 +3463,296 @@
     }
   }
 
+  /* ---------- Приложение А: отзывы (design.md 4.16) ---------- */
+  .rv {
+    /* Поля вклейки; на узких телефонах меньше, чтобы текст скриншотов был крупнее */
+    --pad: 8px;
+    overflow-x: clip;
+  }
+  @media (min-width: 400px) {
+    .rv {
+      --pad: 12px;
+    }
+  }
+  @media (min-width: 768px) {
+    .rv {
+      --pad: 16px;
+    }
+  }
+  .rail-pre {
+    display: block;
+    margin-bottom: 6px;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 1024px) {
+    .rv-body {
+      display: grid;
+      grid-template-columns: subgrid;
+      align-items: center;
+    }
+    .rv-stack {
+      grid-column: 1 / span 7;
+    }
+    .rv-panel {
+      grid-column: 9 / span 3;
+    }
+  }
+
+  /* Стопка: все листы в одной ячейке, высота по самому высокому */
+  .rv-stack {
+    /* Контейнер: от его ширины .rv-card считает общий масштаб (cqi); --cols и --col-gap меняет коллаж reduced-motion */
+    container-type: inline-size;
+    --cols: 1;
+    --col-gap: 0px;
+    display: grid;
+    place-items: center;
+    padding: 24px 0 48px;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  @media (min-width: 768px) {
+    .rv-stack {
+      padding-inline: 16px;
+    }
+  }
+  .rv-card {
+    /*
+     * Один масштаб для всех скриншотов, чтобы текст в вырезках был одного размера:
+     * 0.46px на пиксель скриншота, а если колонка уже, столько, чтобы в неё влезла самая широкая вырезка (--wmax).
+     * Каждый лист отдельно не ужимается, иначе узкие и широкие вырезки получают разный масштаб.
+     */
+    --cell: calc((100cqi - (var(--cols) - 1) * var(--col-gap)) / var(--cols));
+    --s: min(0.46px, (var(--cell) - 2 * var(--pad)) / var(--wmax));
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: var(--z);
+    width: calc(var(--w) * var(--s) + 2 * var(--pad));
+    max-width: 100%;
+    transform: translate(var(--tx, 0px), var(--ty, 0px)) rotate(calc(var(--rot) + var(--tilt, 0deg)))
+      scale(var(--sc, 1));
+    transition:
+      transform 420ms var(--ease-out),
+      opacity 320ms var(--ease-out);
+  }
+  .rv-card[data-depth="1"] {
+    --tx: 14px;
+    --ty: 12px;
+    --tilt: 3deg;
+    --sc: 0.97;
+  }
+  .rv-card[data-depth="2"] {
+    --tx: -12px;
+    --ty: 22px;
+    --tilt: -3.5deg;
+    --sc: 0.94;
+  }
+  .rv-card[data-depth="3"] {
+    --tx: 10px;
+    --ty: 32px;
+    --tilt: 5deg;
+    --sc: 0.91;
+  }
+  .rv-card[data-depth="x"] {
+    --ty: 36px;
+    --sc: 0.88;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Вклейка: лист бумаги, на нём скриншот, подпись по ГОСТу */
+  .rv-sheet {
+    position: relative;
+    padding: calc(var(--pad) + 6px) var(--pad) 10px;
+    background: var(--color-sheet);
+    border: 1px solid rgb(27 54 80 / 0.14);
+    border-radius: var(--radius-2);
+    box-shadow: var(--shadow-paper);
+  }
+  .rv-card[data-depth="0"] .rv-sheet {
+    cursor: grab;
+  }
+  .rv-card[data-depth="0"] .rv-sheet:active {
+    cursor: grabbing;
+  }
+  /* Нижние листы бледнее: видно глубину стопки */
+  .rv-sheet::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: var(--color-paper);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 320ms var(--ease-out);
+  }
+  .rv-card[data-depth="1"] .rv-sheet::after {
+    opacity: 0.55;
+  }
+  .rv-card[data-depth="2"] .rv-sheet::after {
+    opacity: 0.7;
+  }
+  .rv-card[data-depth="3"] .rv-sheet::after {
+    opacity: 0.8;
+  }
+  .rv-tape {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    width: 84px;
+    height: 24px;
+    margin-left: -42px;
+    background: rgb(233 224 206 / 0.86);
+    box-shadow: 0 1px 1px rgb(15 36 56 / 0.08);
+    transform: rotate(var(--tape, -3deg));
+    clip-path: polygon(
+      0 10%,
+      3% 0,
+      97% 4%,
+      100% 16%,
+      98% 32%,
+      100% 50%,
+      97% 68%,
+      100% 86%,
+      97% 100%,
+      4% 96%,
+      0 84%,
+      3% 66%,
+      0 48%,
+      2% 28%
+    );
+  }
+  .rv-check {
+    position: absolute;
+    z-index: 1;
+    top: -16px;
+    right: -8px;
+    width: 44px;
+    height: 44px;
+  }
+  /* Галочка только у верхнего листа: у скрытого штриха круглый кончик иначе виден точкой */
+  .rv-card:not([data-done]) .rv-check {
+    visibility: hidden;
+  }
+  .rv-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 2px;
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+  .rv-cap {
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--color-ink-soft);
+  }
+  .rv-tr {
+    margin-top: 6px;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    font-style: italic;
+    text-align: center;
+    color: var(--color-navy-800);
+  }
+
+  /* Номер вклейки, кнопки, подсказка */
+  .rv-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+  }
+  @media (min-width: 1024px) {
+    .rv-panel {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 28px;
+    }
+  }
+  .rv-count {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .rv-no {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(3rem, 2.2rem + 2.6vw, 4.5rem);
+    line-height: 0.8;
+    letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--color-navy-800);
+  }
+  .rv-of {
+    color: var(--color-ink-soft);
+  }
+  .rv-ctrls {
+    display: flex;
+    gap: 8px;
+  }
+  .rv-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--color-navy-800);
+    border-radius: var(--radius-2);
+    background: transparent;
+    color: var(--color-navy-800);
+    cursor: pointer;
+    transition:
+      background-color 160ms var(--ease-out),
+      color 160ms var(--ease-out),
+      transform 80ms var(--ease-out);
+  }
+  .rv-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: square;
+  }
+  .rv-btn .rv-fill {
+    fill: currentColor;
+    stroke: none;
+  }
+  .rv-btn:active {
+    transform: translate(1px, 1px);
+    background: var(--color-navy-950);
+    color: var(--color-paper);
+  }
+  @media (hover: hover) {
+    .rv-btn:hover {
+      background: var(--color-navy-900);
+      color: var(--color-paper);
+    }
+  }
+  .rv-hint {
+    flex-basis: 100%;
+    max-width: none;
+    font-size: 1.375rem;
+    --rot: -2deg;
+  }
+  @media (min-width: 1024px) {
+    .rv-hint {
+      max-width: 16ch;
+    }
+  }
+
   /* Дальше: общий reduced-motion. Структура DOM не меняется */
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -3466,6 +3837,48 @@
     .menu-row {
       opacity: 1;
       transform: none;
+    }
+    /* Отзывы: вместо стопки статичный коллаж всех вклеек, кнопок и автолистания нет */
+    .rv-stack {
+      --col-gap: 32px;
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+      gap: 40px var(--col-gap);
+      padding: 12px 0 0;
+    }
+    @media (min-width: 768px) {
+      .rv-stack {
+        --cols: 2;
+        padding-inline: 8px;
+      }
+    }
+    @media (min-width: 1280px) {
+      .rv-stack {
+        --cols: 3;
+      }
+    }
+    .rv-card,
+    .rv-card[data-depth] {
+      grid-area: auto;
+      z-index: auto;
+      --tx: 0px;
+      --ty: 0px;
+      --tilt: 0deg;
+      --sc: 1;
+      opacity: 1;
+      pointer-events: none;
+    }
+    .rv-sheet {
+      transform: none !important;
+    }
+    .rv-sheet::after {
+      opacity: 0 !important;
+    }
+    .rv-card:not([data-done]) .rv-check {
+      visibility: visible;
+    }
+    .rv-panel {
+      display: none;
     }
   }
 }

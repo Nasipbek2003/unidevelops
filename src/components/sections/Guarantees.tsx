@@ -24,19 +24,17 @@ function ItemText({ text, phrase }: { text: string; phrase?: string }) {
   return (
     <>
       {text.slice(0, at)}
-      <span className="pen-wrap whitespace-nowrap">
+      <span className="pen-wrap">
         {phrase}
         <Pen kind="underline" duration={450} delay={300} className="-bottom-[3px] left-0 h-2.5 w-full" />
+        <span aria-hidden="true" className="clause-note">
+          <span className="clause-arrow">
+            <Pen kind="arrow" duration={500} delay={500} className="clause-arrow-svg" />
+          </span>
+          <span className="clause-note-t">{redpen[4]}</span>
+        </span>
       </span>
       {text.slice(at + (phrase?.length ?? 0))}
-      <span aria-hidden="true" className="clause-note">
-        <span className="clause-arrow">
-          <Pen kind="arrow" duration={500} delay={500} className="inset-0 size-full" />
-        </span>
-        <span className="note" style={cssVars({ "--rot": "-4deg" })}>
-          {redpen[4]}
-        </span>
-      </span>
     </>
   );
 }
@@ -222,7 +220,7 @@ export function Guarantees() {
                     return (
                       <li
                         key={item.title}
-                        className={`clause draw-rule${marked ? " clause-marked" : ""}`}
+                        className="clause draw-rule"
                         style={cssVars({ "--i": i, "--step": "70ms" })}
                       >
                         <span aria-hidden="true" className="clause-no">

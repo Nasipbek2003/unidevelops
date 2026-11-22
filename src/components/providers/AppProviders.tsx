@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import type { WorkType } from "@/content";
+import { AnchorSettle } from "./AnchorSettle";
 
 interface ContactState {
   /** Тип работы, предвыбранный кликом по услуге */
@@ -37,7 +38,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
 
   return (
     <MotionConfig reducedMotion="user">
-      <ContactContext.Provider value={ctx}>{children}</ContactContext.Provider>
+      <ContactContext.Provider value={ctx}>
+        <AnchorSettle />
+        {children}
+      </ContactContext.Provider>
     </MotionConfig>
   );
 }

@@ -9,18 +9,23 @@ import "./globals.css";
 const cormorant = Cormorant({
   variable: "--font-cormorant",
   subsets: ["cyrillic", "latin"],
+  weight: ["500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
 const golos = Golos_Text({
   variable: "--font-golos",
+  weight: ["400", "500", "600", "700"],
+  style: "normal",
   subsets: ["cyrillic", "latin"],
   display: "swap",
 });
 
 const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
+  weight: ["400", "500", "700"],
+  style: "normal",
   subsets: ["cyrillic", "latin"],
   display: "swap",
 });
@@ -28,6 +33,7 @@ const jetbrains = JetBrains_Mono({
 const marck = Marck_Script({
   variable: "--font-marck",
   weight: "400",
+  style: "normal",
   subsets: ["cyrillic", "latin"],
   display: "swap",
   preload: false,
